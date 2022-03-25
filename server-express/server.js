@@ -49,7 +49,7 @@ app.get("/api/v1/processgeojson", async (req, res) => {
 });
 
 const server = createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server, path: "/api/v1/ws" });
 
 wss.on("connection", function (ws) {
   console.log("client connected");
@@ -69,6 +69,6 @@ server.listen(PORT, function () {
 
 const watcher = chokidar.watch(path.join(__dirname, "./data"));
 watcher.on("change", (fn) => {
-  console.log(`${fn} changed`);
+  console.log(`${path.parse(fn).base} changed`);
   fetch("http://localhost:8000/api/v1/update");
 });

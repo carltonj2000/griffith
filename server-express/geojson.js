@@ -20,9 +20,6 @@ const process = async () => {
   const griffithGeojsonText = await fs.readFile(fnIn);
   const griffithGeojson = await JSON.parse(griffithGeojsonText);
 
-  //const convexHull = turf.convex(griffithGeojson);
-  //await fs.writeFile("./convex_hull.geojson", JSON.stringify(convexHull, null, 2));
-
   let featuresSeen = 0;
   let lineStringsSeen = 0;
   let coordinatesSeen = [];
@@ -62,15 +59,19 @@ const process = async () => {
   log(rounded(meters2feet(max)), "max elevation");
   log(rounded(meters2feet(max - min)), "elevation difference");
 
+  const delta = (lat, lng, ele) => Math.sqrt(lat ** 2 + lng ** 2 + ele ** 2);
   const { minDelta, maxDelta } = coordinatesSeen.reduce(
-    (minmax, coordinate) => {
+    (minmax, coordinate, index) => {
+      if (index === 0) return minmax;
+      if (index === 0) return minmax;
+      const delta = coordinate[2] - coordinatesSeen[index - 1][2];
       const min =
-        minmax.min === -1 ? coordinate[2] : Math.min(minmax.min, coordinate[2]);
+        minmax.minDelta === -1 ? delta : Math.min(minmax.minDelta, delta);
       const max =
-        minmax.max === -1 ? coordinate[2] : Math.max(minmax.max, coordinate[2]);
-      return { min, max };
+        minmax.maxDelta === -1 ? delta : Math.max(minmax.maxDelta, delta);
+      return { minDelta: min, maxDelta: max };
     },
-    { min: -1, max: -1 }
+    { minDelta: -1, maxDelta: -1 }
   );
 
   await fs.writeFile(fnOut, JSON.stringify(log(), null, 2));

@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     if (!client) {
-      const c = new W3CWebSocket("ws://127.0.0.1:8000");
+      const c = new W3CWebSocket("ws://127.0.0.1:3000/api/v1/ws");
       c.onopen = () => {
         console.log("WebSocket Client Connected");
       };
@@ -23,7 +23,7 @@ function App() {
   }, []);
 
   const getTable = async () => {
-    const text = await fetch("http://localhost:8000/api/v1/table");
+    const text = await fetch("http://localhost:3000/api/v1/table");
     if (!text) return;
     const data = await text.json();
     if (!data) return;
@@ -37,11 +37,11 @@ function App() {
   }, [reFetch]);
 
   const kml2geojson = () => {
-    fetch("http://localhost:8000/api/v1/kml2geojson");
+    fetch("http://localhost:3000/api/v1/kml2geojson");
   };
 
   const processgeojson = () => {
-    fetch("http://localhost:8000/api/v1/processgeojson");
+    fetch("http://localhost:3000/api/v1/processgeojson");
   };
 
   return (
