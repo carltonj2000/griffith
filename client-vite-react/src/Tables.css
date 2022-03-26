@@ -1,0 +1,21 @@
+table {
+  border-collapse: collapse;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+}
+
+.tables {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.tableRow {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}

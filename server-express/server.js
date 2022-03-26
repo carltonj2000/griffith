@@ -72,3 +72,15 @@ watcher.on("change", (fn) => {
   console.log(`${path.parse(fn).base} changed`);
   fetch("http://localhost:8000/api/v1/update");
 });
+
+const processOnStartUp = true;
+
+const processOnStartup = async () => {
+  console.log("processOnStartUp");
+  //await fetch("http://localhost:8000/api/v1/kml2geojson");
+  await fetch("http://localhost:8000/api/v1/processgeojson");
+};
+
+if (processOnStartUp) {
+  processOnStartup();
+}
